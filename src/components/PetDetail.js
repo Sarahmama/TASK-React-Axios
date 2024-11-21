@@ -1,17 +1,24 @@
 import React from "react";
 import data from "../petsData";
-import { getPetById } from "../API/pets";
-import { useQuery } from "@tanstack/react-query";
+import { deletePet, getPetById } from "../API/pets";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 
-const PetDetail = () => {
-  
+const PetDetail = ({petId}) => {
+
 const {data,isFetching,isSuccess} = useQuery({
-queryKey:"petData",
-queryFn: ()=>getPetById(151),
+queryKey:["pets",petId],
+queryFn: ()=>getPetById(petId),
 })
 
-console.log(data)
+const mutation = useMutation({
+  mutationKey:["deletePet"],
+  mutationFn: (petId)=> deletePet(petId),
+});
+
+const handleDelete =()=>{
+mutation.mutate(petId);
+}
   return (
     <div className="bg-[#F9E3BE] w-screen h-[100vh] flex justify-center items-center">
       <div className="border border-black rounded-md w-[70%] h-[70%] overflow-hidden flex flex-col md:flex-row p-5">
@@ -31,7 +38,7 @@ console.log(data)
             Adobt
           </button>
 
-          <button className="w-[70px] border border-black rounded-md  hover:bg-red-400">
+          <button className="w-[70px] border border-black rounded-md  hover:bg-red-400" onClick={handleDelete}>
             Delete
           </button>
         </div>

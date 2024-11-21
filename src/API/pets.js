@@ -18,4 +18,9 @@ console.log(response);
 return response;
 }
 
-export {getAllPets,getPetById,addPet};
+async function deletePet(id){
+    const response = await instance.delete(`pets/${id}`);
+    console.log(response);
+    return response;
+}
+export {getAllPets,getPetById,addPet, deletePet};

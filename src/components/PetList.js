@@ -4,18 +4,18 @@ import PetItem from "./PetItem";
 import Modal from "./Modal";
 import { getAllPets } from "../API/pets";
 import { useQuery } from "@tanstack/react-query";
-const PetList = () => {
+const PetList = ({setPetId}) => {
   const [query, setQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   const { data, isFetching, isSuccess ,refetch} = useQuery({
-    queryKey: ["petDataList"],
+    queryKey: ["pets"],
      queryFn: getAllPets,
      enabled: false
    });
   const petList = data
   ?.filter((pet) => pet.name.toLowerCase().includes(query.toLowerCase()))
-    .map((pet) => <PetItem pet={pet} key={pet.id} />);
+    .map((pet) => <PetItem pet={pet} key={pet.id} setPetId={setPetId}/>);
   return (
     <>
       <div className="bg-[#F9E3BE] flex flex-col justify-center items-center ">
